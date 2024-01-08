@@ -3,6 +3,8 @@ import VideoToMP3 from './VideoToMP3';
 import { downloadFile } from './DownloadVideo';
 import '../index.css'
 import placeHolder from '../assets/placeHolder.png'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const YouTubeVideoDownloader = () => {
   const [url, setUrl] = useState('');
@@ -30,18 +32,23 @@ const YouTubeVideoDownloader = () => {
     const id = extractVideoId(url);
     if (id) {
       setVideoId(id);
+    } else {
+      toast.error("That is not a valid URL or the video does not exist");
     }
   };
 
   const handleDownload = async () => {
-    if (!videoId) return;
+    if (!videoId) {
+      return;
+    }
+
 
     try {
       const data = await VideoToMP3.downloadVideo(videoId);
       console.log(data.title)
       downloadFile(data.link, data.title)
     } catch (error) {
-      console.error(error);
+      toast.error("There was a problem downloading the video, try again later.");
     }
   };
 
@@ -52,7 +59,7 @@ const YouTubeVideoDownloader = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4 w-[100dvw]">
 
-      <div className="max-w-[30%] w-full m-4 video" >
+      <div className="md:max-w-[30%] max-w-[560px] w-full m-4 video">
         {videoId ? (
           <>
             <iframe
@@ -71,7 +78,7 @@ const YouTubeVideoDownloader = () => {
           </div>)}
       </div>
 
-      <form onSubmit={handleSubmit} className="mb-4 flex flex-col max-w-[30%] w-full items-center">
+      <form onSubmit={handleSubmit} className="mb-4 flex flex-col md:max-w-[30%] max-w-[560px] w-full items-center">
         <input
           type="text"
           value={url}
@@ -88,7 +95,7 @@ const YouTubeVideoDownloader = () => {
           </button>
         </div>
       </form>
-
+      <ToastContainer theme='colored'/>
     </div>
   );
 };
