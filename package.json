@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://macs0021.github.io/Youtube---MP3",
+  "homepage": "https://github.com/macs0021/Youtube---MP3",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

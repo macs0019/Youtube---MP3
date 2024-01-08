@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [react()],
   base: "/Youtube---MP3/",
   build: {
-    outDir: './build', // Cambia 'build' al nombre del directorio deseado
+    outDir: './build',
   },
 })
