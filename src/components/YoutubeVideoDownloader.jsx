@@ -37,17 +37,41 @@ const YouTubeVideoDownloader = () => {
     }
   };
 
+  const waitForFile = async (url, maxRetries = 10, delay = 1000) => {
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        const response = await fetch(url, { method: 'HEAD' });
+        if (response.ok) {
+          return true;
+        }
+      } catch (error) {
+        console.error('Error checking file availability:', error);
+      }
+      toast.info(`Waiting for the file to be ready... (${i + 1}/${maxRetries})`);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+    return false;
+  };
+
   const handleDownload = async () => {
     if (!videoId) {
       return;
     }
 
-
     try {
       const data = await VideoToMP3.downloadVideo(videoId);
-      console.log(data.title)
-      downloadFile(data.link, data.title)
+      console.log(data.title);
+
+      toast.info("Preparing your download. Please wait...");
+      const isFileReady = await waitForFile(data.link);
+      if (isFileReady) {
+        downloadFile(data.link, data.title);
+        toast.success("Download started successfully!");
+      } else {
+        toast.error("The file is not ready for download. Please try again later.");
+      }
     } catch (error) {
+      console.error("Download error:", error);
       toast.error("There was a problem downloading the video, try again later.");
     }
   };
