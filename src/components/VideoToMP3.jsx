@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const API_KEY = import.meta.env.VITE_API_KEY;
+
 const VideoToMP3 = {
   downloadVideo: async (videoId) => {
     const options = {
@@ -7,7 +9,7 @@ const VideoToMP3 = {
       url: 'https://youtube-mp36.p.rapidapi.com/dl',
       params: { id: videoId },
       headers: {
-        'X-RapidAPI-Key': 'd26a446386msh78015955bd6c36ep1f2debjsn51a621a6365c',
+        'X-RapidAPI-Key': API_KEY,
         'X-RapidAPI-Host': 'youtube-mp36.p.rapidapi.com'
       }
     };
